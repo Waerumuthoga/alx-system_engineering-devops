@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
-# installs nginx with the configuration
-#+ Listen on port 80.
-#+ Returns page containing "Hello World!"
-#++ at root with a curl GET request
+# Bash script that configures a new Ubuntu machine to respect above requirements
+# (this script will be run on the server itself)
 
+# Install nginx
 apt-get update
-apt-get install nginx -y
+apt-get -y install nginx
 
+# Create folders
 mkdir /etc/nginx/html
+# Create file
 touch /etc/nginx/html/index.html
+
+# Write to files
 echo "Hello World!" > /etc/nginx/html/index.html
 printf %s "server {
 	listen    80 default_server;
@@ -18,4 +21,6 @@ printf %s "server {
 }
 " > /etc/nginx/sites-available/default
 
+
+# Restart Nginx
 service nginx restart
