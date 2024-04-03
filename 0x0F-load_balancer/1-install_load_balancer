@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Installs and sets up haproxy
+
+sudo apt-get -y update
+sudo apt-get install -y software-properties-common
+sudo add-apt-repository -y ppa:vbernat/haproxy-2.6
+sudo apt-get -y install haproxy=2.6.\*
+
+# Configure to start at each boot time
+sudo chmod o+w /etc/default/haproxy
+echo "ENABLED=1" >> /etc/default/haproxy
+
+# Listen to web_01 and web_02 servers
+sudo chown -R "$USER:$USER" /etc/haproxy
+
+sudo cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.bak
+
+echo "
+frontend http_front
+        bind *:80
+        option forwardfor
+        default_backend web_servers
+backend web_servers
+        balance roundrobin
+        server web-01 54.174.223.199:80 check
+        server web-02 54.172.94.9:80 check
+" >> /etc/haproxy/haproxy.cfg
+
+sudo service haproxy restart
