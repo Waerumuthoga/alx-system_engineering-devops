@@ -1,1 +1,1 @@
-This directory contains files from the 0x16-api_advanced ALX project.
+ This is a directory that contains 0x16-api_advanced tasks.
